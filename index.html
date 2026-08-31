@@ -7,7 +7,39 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>World Clock</h1>
+    <div class="app-container">
+      <header>
+        <h1>World Clock</h1>
+        <select name="city-select">
+          <option value="" hidden>--Please choose a city--</option>
+          <option value="">My location</option>
+          <option value="">Dublin</option>
+          <option value="">Los Angeles</option>
+          <option value="">Tokyo</option>
+        </select>
+      </header>
+      <main>
+        <div class="city">
+          <h2>London</h2>
+          <div class="date">August 31 2026</div>
+          <div class="time">11:47:23</div>
+        </div>
+        <div class="city">
+          <h2>New York City</h2>
+          <div class="date">August 31 2026</div>
+          <div class="time">11:47:23</div>
+        </div>
+        <div class="city">
+          <h2>Sydney</h2>
+          <div class="date">August 31 2026</div>
+          <div class="time">11:47:23</div>
+        </div>
+      </main>
+      <footer>
+        This project was coded by <a href="#">Martina Scibilia</a>, versioned on
+        <a href="#">GitHub</a> and hosted on <a href="#">Netlify</a>
+      </footer>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
