@@ -67,6 +67,10 @@ setInterval(displayDateTime);
 function updateCity(event) {
   // Extract time zone for selected city
   let timeZone = event.target.value;
+  // Extract time zone for my location
+  if (timeZone === "current") {
+    timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
   // Extract city name for selected city
   let cityName = timeZone.split("/")[1].replace("_", " ");
 
