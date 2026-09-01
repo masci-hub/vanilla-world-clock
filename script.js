@@ -1,47 +1,58 @@
 // Display the date and time for default locations
-function displayTime() {
-  // Select relevant elements
-  let londonCityElement = document.getElementById("london");
-  let londonDateElement = londonCityElement.querySelector(".date");
-  let londonTimeElement = londonCityElement.querySelector(".time");
+function displayDateTime() {
+  // Initialize empty string
+  let cityElement = "";
 
   // Get current date and time
   let now = new Date();
 
-  // Define date formatting options
-  let dateOptions = {
-    timeZone: "Europe/London",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+  // Map city names to their respective time zone strings
+  const cities = {
+    London: "Europe/London",
+    "New York City": "America/New_York",
+    Sydney: "Australia/Sydney",
   };
+  // Loop through each city
+  for (let city in cities) {
+    // Define date formatting options
+    let dateOptions = {
+      timeZone: cities[city],
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    };
+    // Format date
+    let date = new Intl.DateTimeFormat("en-US", dateOptions).format(now);
 
-  // Define time formatting options
-  let timeOptions = {
-    timeZone: "Europe/London",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  };
+    // Define time formatting options
+    let timeOptions = {
+      timeZone: cities[city],
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
+    // Format time
+    let time = new Intl.DateTimeFormat("en-US", timeOptions).format(now);
+    // Separate hour from period
+    let [timeHour, timePeriod] = time.split(" ");
 
-  // Format date
-  let londonDate = new Intl.DateTimeFormat("en-US", dateOptions).format(now);
-  // Display formatted date
-  londonDateElement.textContent = londonDate;
+    // Construct HTML content for each city
+    cityElement += `
+       <div class="city">
+         <div>
+           <h2>${city}</h2>
+           <div class="date">${date}</div>
+         </div>
+         <div class="time">${timeHour} <small>${timePeriod}</small></div>
+       </div>
+    `;
+  }
 
-  // Format time
-  let londonTime = new Intl.DateTimeFormat("en-US", timeOptions).format(now);
-  // Split time string into time hour and time period
-  let [londonTimeHour, londonTimePeriod] = londonTime.split(" ");
-  // Display time hour
-  londonTimeElement.textContent = londonTimeHour;
-  // Create small element for time period
-  let londonTimePeriodElement = document.createElement("small");
-  // Set content for small element
-  londonTimePeriodElement.textContent = ` ${londonTimePeriod}`;
-  // Append small element to main time element
-  londonTimeElement.appendChild(londonTimePeriodElement);
+  // Select container element
+  let cityElementContainer = document.getElementById("city-element-container");
+  // Display HTML content for each city
+  cityElementContainer.innerHTML = cityElement;
 }
 
-setInterval(displayTime);
+setInterval(displayDateTime);
