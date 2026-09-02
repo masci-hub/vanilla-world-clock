@@ -40,7 +40,7 @@ function generateCityElement(city, timeZone) {
            <h2>${city}</h2>
            <div class="date">${date}</div>
          </div>
-         <div class="time">${timeHour} <small>${timePeriod}</small></div>
+         <div class="time"data-timezone="${timeZone}">${timeHour} <small>${timePeriod}</small></div>
        </div>
     `;
 
@@ -82,9 +82,6 @@ function displayDefaultCities() {
   }
 }
 
-// Update time every second
-setInterval(displayDefaultCities);
-
 // Generate HTML content for selected city
 function generateSelectedCityElement(event) {
   // Extract time zone for selected city
@@ -110,9 +107,33 @@ function displaySelectedCity(event) {
   );
   // Display HTML content for selected city
   selectedCityContainer.innerHTML = generateSelectedCityElement(event);
-  // Update time every second
-  setInterval(() => displaySelectedCity(event));
 }
+
+function updateDateTime() {
+  // Select all city elements
+  const cityElements = document.querySelectorAll(".city");
+  // Iterate over city elements
+  cityElements.forEach((cityElement) => {
+    // Select date element
+    const dateElement = cityElement.querySelector(".date");
+    // Select time element
+    const timeElement = cityElement.querySelector(".time");
+    // Get time zone
+    const timeZone = timeElement.getAttribute("data-timezone");
+    // Get updated date and time
+    const { date, timeHour, timePeriod } = formatDateTime(timeZone);
+    // Update date element
+    dateElement.innerHTML = date;
+    // Update time element
+    timeElement.innerHTML = `${timeHour} <small>${timePeriod}</small>`;
+  });
+}
+
+// Init page
+displayDefaultCities();
+
+// Update date and time every second
+setInterval(updateDateTime);
 
 let citySelect = document.getElementById("city-select");
 citySelect.addEventListener("change", displaySelectedCity);
