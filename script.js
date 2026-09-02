@@ -30,8 +30,8 @@ function formatDateTime(timeZone) {
   return { date, timeHour, timePeriod };
 }
 
-// Display date and time for default locations
-function displayDateTime() {
+// Generate HTML content for default cities
+function generateDefaultCityElements() {
   // Initialize empty string
   let defaultCityElements = "";
 
@@ -57,7 +57,11 @@ function displayDateTime() {
        </div>
     `;
   }
+  return defaultCityElements;
+}
 
+// Display date and time for default locations
+function displayDateTime() {
   // Select container element
   let defaultCitiesContainer = document.getElementById(
     "default-cities-container",
@@ -65,7 +69,7 @@ function displayDateTime() {
   // Check if container element exists
   if (defaultCitiesContainer) {
     // Display HTML content for each city
-    defaultCitiesContainer.innerHTML = defaultCityElements;
+    defaultCitiesContainer.innerHTML = generateDefaultCityElements();
   }
 }
 
