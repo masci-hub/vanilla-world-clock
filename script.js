@@ -26,8 +26,25 @@ function formatDateTime(timeZone) {
   // Separate hour from period
   let [timeHour, timePeriod] = time.split(" ");
 
-  // Return formatted date and time
   return { date, timeHour, timePeriod };
+}
+
+// Generate HTML content for any city
+function generateCityElement(city, timeZone) {
+  // Format date and time for city
+  const { date, timeHour, timePeriod } = formatDateTime(timeZone);
+  // Costruct HTML content for city element
+  let cityElement = `
+       <div class="city">
+         <div>
+           <h2>${city}</h2>
+           <div class="date">${date}</div>
+         </div>
+         <div class="time">${timeHour} <small>${timePeriod}</small></div>
+       </div>
+    `;
+
+  return cityElement;
 }
 
 // Generate HTML content for default cities
@@ -41,40 +58,32 @@ function generateDefaultCityElements() {
     "New York": "America/New_York",
     Sydney: "Australia/Sydney",
   };
-  // Loop through each city
+  // Loop through default cities
   for (let city in defaultCities) {
-    // Format date and time for default city
+    // Extract time zone for default city
     const timeZone = defaultCities[city];
-    const { date, timeHour, timePeriod } = formatDateTime(timeZone);
-    // Construct HTML content for each city
-    defaultCityElements += `
-       <div class="city">
-         <div>
-           <h2>${city}</h2>
-           <div class="date">${date}</div>
-         </div>
-         <div class="time">${timeHour} <small>${timePeriod}</small></div>
-       </div>
-    `;
+    // Construct HTML content for default cities
+    defaultCityElements += generateCityElement(city, timeZone);
   }
+
   return defaultCityElements;
 }
 
-// Display date and time for default locations
-function displayDateTime() {
+// Display city name, date, and time for all default cities
+function displayDefaultCities() {
   // Select container element
   let defaultCitiesContainer = document.getElementById(
     "default-cities-container",
   );
   // Check if container element exists
   if (defaultCitiesContainer) {
-    // Display HTML content for each city
+    // Display HTML content for default cities
     defaultCitiesContainer.innerHTML = generateDefaultCityElements();
   }
 }
 
 // Update time every second
-setInterval(displayDateTime);
+setInterval(displayDefaultCities);
 
 // Generate HTML content for selected city
 function generateSelectedCityElement(event) {
@@ -86,24 +95,15 @@ function generateSelectedCityElement(event) {
   }
   // Extract city name for selected city
   let cityName = timeZone.split("/")[1].replace("_", " ");
-  // Format date and time for selected city
-  const { date, timeHour, timePeriod } = formatDateTime(timeZone);
 
   // Costruct HTML content for selected city
-  let selectedCityElement = `
-       <div class="city">
-         <div>
-           <h2>${cityName}</h2>
-           <div class="date">${date}</div>
-         </div>
-         <div class="time">${timeHour} <small>${timePeriod}</small></div>
-       </div>
-    `;
+  let selectedCityElement = generateCityElement(cityName, timeZone);
+
   return selectedCityElement;
 }
 
-// Display date and time for selected city
-function updateCity(event) {
+// Display city name, date, and time for selected city
+function displaySelectedCity(event) {
   // Select container element
   let selectedCityContainer = document.getElementById(
     "selected-city-container",
@@ -111,8 +111,8 @@ function updateCity(event) {
   // Display HTML content for selected city
   selectedCityContainer.innerHTML = generateSelectedCityElement(event);
   // Update time every second
-  setInterval(() => updateCity(event));
+  setInterval(() => displaySelectedCity(event));
 }
 
 let citySelect = document.getElementById("city-select");
-citySelect.addEventListener("change", updateCity);
+citySelect.addEventListener("change", displaySelectedCity);
