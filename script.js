@@ -107,6 +107,8 @@ function displaySelectedCity(event) {
   );
   // Display HTML content for selected city
   selectedCityContainer.innerHTML = generateSelectedCityElement(event);
+  // Reset select to first option
+  event.target.selectedIndex = 0;
 }
 
 function updateDateTime() {
