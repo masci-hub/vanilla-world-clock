@@ -76,8 +76,8 @@ function displayDateTime() {
 // Update time every second
 setInterval(displayDateTime);
 
-// Display date and time for selected city
-function updateCity(event) {
+// Generate HTML content for selected city
+function generateSelectedCityElement(event) {
   // Extract time zone for selected city
   let timeZone = event.target.value;
   // Extract time zone for my location
@@ -99,12 +99,17 @@ function updateCity(event) {
          <div class="time">${timeHour} <small>${timePeriod}</small></div>
        </div>
     `;
+  return selectedCityElement;
+}
+
+// Display date and time for selected city
+function updateCity(event) {
   // Select container element
   let selectedCityContainer = document.getElementById(
     "selected-city-container",
   );
   // Display HTML content for selected city
-  selectedCityContainer.innerHTML = selectedCityElement;
+  selectedCityContainer.innerHTML = generateSelectedCityElement(event);
   // Update time every second
   setInterval(() => updateCity(event));
 }
