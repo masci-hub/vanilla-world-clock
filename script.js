@@ -1,20 +1,20 @@
 // Format date and time for any city
 function formatDateTime(timeZone) {
   // Get current date and time
-  let now = new Date();
+  const now = new Date();
 
   // Define date formatting options
-  let dateOptions = {
+  const dateOptions = {
     timeZone: timeZone,
     month: "long",
     day: "numeric",
     year: "numeric",
   };
   // Format date
-  let date = new Intl.DateTimeFormat("en-US", dateOptions).format(now);
+  const date = new Intl.DateTimeFormat("en-US", dateOptions).format(now);
 
   // Define time formatting options
-  let timeOptions = {
+  const timeOptions = {
     timeZone: timeZone,
     hour: "2-digit",
     minute: "2-digit",
@@ -22,25 +22,25 @@ function formatDateTime(timeZone) {
     hour12: true,
   };
   // Format time
-  let time = new Intl.DateTimeFormat("en-US", timeOptions).format(now);
+  const time = new Intl.DateTimeFormat("en-US", timeOptions).format(now);
   // Separate hour from period
-  let [timeHour, timePeriod] = time.split(" ");
+  const [timeHour, timePeriod] = time.split(" ");
 
   return { date, timeHour, timePeriod };
 }
 
 // Generate HTML content for any city
-function generateCityElement(city, timeZone) {
+function generateCityElement(cityName, timeZone) {
   // Format date and time for city
   const { date, timeHour, timePeriod } = formatDateTime(timeZone);
   // Costruct HTML content for city element
-  let cityElement = `
+  const cityElement = `
        <div class="city">
          <div>
-           <h2>${city}</h2>
+           <h2>${cityName}</h2>
            <div class="date">${date}</div>
          </div>
-         <div class="time"data-timezone="${timeZone}">${timeHour} <small>${timePeriod}</small></div>
+         <div class="time" data-timezone=${timeZone}>${timeHour} <small>${timePeriod}</small></div>
        </div>
     `;
 
@@ -59,20 +59,20 @@ function generateDefaultCityElements() {
     Sydney: "Australia/Sydney",
   };
   // Loop through default cities
-  for (let city in defaultCities) {
+  for (let cityName in defaultCities) {
     // Extract time zone for default city
-    const timeZone = defaultCities[city];
+    const timeZone = defaultCities[cityName];
     // Construct HTML content for default cities
-    defaultCityElements += generateCityElement(city, timeZone);
+    defaultCityElements += generateCityElement(cityName, timeZone);
   }
 
   return defaultCityElements;
 }
 
-// Display city name, date, and time for all default cities
+// Display default cities on the page
 function displayDefaultCities() {
   // Select container element
-  let defaultCitiesContainer = document.getElementById(
+  const defaultCitiesContainer = document.getElementById(
     "default-cities-container",
   );
   // Check if container element exists
@@ -87,22 +87,22 @@ function generateSelectedCityElement(event) {
   // Extract time zone for selected city
   let timeZone = event.target.value;
   // Extract time zone for my location
-  if (timeZone === "current") {
+  if (timeZone === "current-location") {
     timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
   // Extract city name for selected city
-  let cityName = timeZone.split("/")[1].replace("_", " ");
+  const cityName = timeZone.split("/")[1].replace("_", " ");
 
   // Costruct HTML content for selected city
-  let selectedCityElement = generateCityElement(cityName, timeZone);
+  const selectedCityElement = generateCityElement(cityName, timeZone);
 
   return selectedCityElement;
 }
 
-// Display city name, date, and time for selected city
+// Display selected city on the page
 function displaySelectedCity(event) {
   // Select container element
-  let selectedCityContainer = document.getElementById(
+  const selectedCityContainer = document.getElementById(
     "selected-city-container",
   );
   // Display HTML content for selected city
@@ -111,6 +111,7 @@ function displaySelectedCity(event) {
   event.target.selectedIndex = 0;
 }
 
+// Update date and time for all displayed cities
 function updateDateTime() {
   // Select all city elements
   const cityElements = document.querySelectorAll(".city");
@@ -131,11 +132,12 @@ function updateDateTime() {
   });
 }
 
-// Init page
+// Initialize page
 displayDefaultCities();
+
+// Add event listener to city select
+const citySelect = document.getElementById("city-select");
+citySelect.addEventListener("change", displaySelectedCity);
 
 // Update date and time every second
 setInterval(updateDateTime);
-
-let citySelect = document.getElementById("city-select");
-citySelect.addEventListener("change", displaySelectedCity);
