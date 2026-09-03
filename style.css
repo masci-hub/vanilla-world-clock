@@ -37,6 +37,7 @@ footer {
 
 footer a {
   text-decoration: none;
+  color: #885df1;
 }
 
 footer a:hover {
@@ -45,7 +46,7 @@ footer a:hover {
 
 .app-container {
   max-width: 600px;
-  margin: 60px auto;
+  margin: 35px auto;
   background-color: rgb(255, 255, 255);
   border-radius: 6px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
